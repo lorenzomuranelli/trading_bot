@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Automated Trading Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Automated Trading Bot</h1>
+    <form action="/backtest" method="post">
+        <label for="symbol">Symbol:</label>
+        <input type="text" id="symbol" name="symbol"><br><br>
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date"><br><br>
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date"><br><br>
+        <input type="submit" value="Backtest">
+    </form>
+    <form action="/live_trade" method="post">
+        <label for="symbol">Symbol:</label>
+        <input type="text" id="symbol" name="symbol"><br><br>
+        <label for="side">Side:</label>
+        <select id="side" name="side">
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
+        </select><br><br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity"><br><br>
+        <input type="submit" value="Execute Trade">
+    </form>
+    <div id="result"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(data) {
+                        $('#result').html('Result: ' + data.result);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
